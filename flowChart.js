@@ -195,9 +195,6 @@
       jsonWriter.marshal($this.canvas, function(json){
         // convert the json object into string representation
         var jsonTxt = JSON.stringify(json,null,2);
-        console.log(jsonTxt);
-        // insert the json string into a DIV for preview or post
-        // it via ajax to the server....
         $("#canvasImage").attr("data-json",jsonTxt);
     
      });

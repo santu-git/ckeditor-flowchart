@@ -24,6 +24,11 @@ CKEDITOR.plugins.add('flowChart',
         command: 'flowChart',
         group: 'flowChartGroup'
       });
+      editor.contextMenu.addListener( function( element ) {
+				if ( element.getAscendant( 'img', true ) && (element.getAttribute('class') || "").split(" ").includes('flow-chart-img')) {
+					return { flowChartItem: CKEDITOR.TRISTATE_OFF };
+				}
+      });
     }
     CKEDITOR.dialog.add('flowChartDialog', this.path + 'dialogs/flowChart.js');
     //console.log(editor);
