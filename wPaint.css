@@ -1,0 +1,110 @@
+._flowChart_menu {
+  padding: 1px;
+  background: #efefef;
+  border: solid #000000 2px;
+  border-radius: 5px;
+  box-shadow: 3px 3px 5px #555555;
+  z-index: 999999;
+}
+._flowChart_options {
+  float: left;
+  padding: 2px;
+}
+
+._flowChart_icon,
+._flowChart_lineWidth,
+._flowChart_color {
+  float: left;
+  width: 18px;
+  height: 18px;
+  margin: 0 2px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  border-style: solid;
+  border-width: 1px;
+  padding: 3px;
+  border-radius: 5px;
+}
+
+._flowChart_icon,
+._flowChart_lineWidth,
+._wColorPicker_buttonBorder {
+  border-color: #999999;
+}
+._flowChart_icon:hover,
+._flowChart_icon.active {
+  border-color: #f88017;
+  background-color: #e5e5e5;
+}
+
+._flowChart_lineWidth {
+  position: relative;
+  width: 39px;
+}
+._flowChart_lineWidth select {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  margin: 0px;
+  background-color: #efefef;
+  border: none;
+  cursor: pointer;
+}
+
+._flowChart_handle {
+  float: left;
+  width: 10px;
+  height: 30px;
+  background: #afafaf;
+  border-radius: 3px 0 0 3px;
+  cursor: pointer;
+}
+._flowChart_colorPicker {
+  float: left;
+  height: 24px;
+}
+
+._flowChart_eraser_cursor {
+  position: absolute;
+  border: solid #000000 1px;
+  display: none;
+  z-index: 999998;
+}
+
+/***********************************************************
+ * Images
+ ***********************************************************/
+._flowChart_handle {
+  background-image: url("./images/menu_handle.png");
+}
+._flowChart_rectangle {
+  background-image: url("./images/icon_rectangle.png");
+}
+._flowChart_arrow {
+  background-image: url("./images/icon_arrow.png");
+}
+._flowChart_rhombus {
+  background-image: url("./images/icon_rhombus.png");
+}
+._flowChart_ellipse {
+  background-image: url("./images/icon_ellipse.png");
+}
+._flowChart_line {
+  background-image: url("./images/icon_line.png");
+}
+._flowChart_pencil {
+  background-image: url("./images/icon_pencil.png");
+}
+._flowChart_eraser {
+  background-image: url("./images/icon_eraser.png");
+}
+._flowChart_save {
+  background-image: url("./images/save.png");
+}
+._flowChart_clear {
+  background-image: url("./images/clear.png");
+}
+._flowChart_terminator {
+  background-image: url("./images/icon_terminator.png");
+}
