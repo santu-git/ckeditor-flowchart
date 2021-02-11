@@ -5,15 +5,27 @@ Plugin Name : Flowchart Editor
 */
 CKEDITOR.plugins.add('flowChart',
 {
-    init: function(editor)
+  init: function(editor)
+  {
+    editor.addCommand('flowChart', new CKEDITOR.dialogCommand('flowChartDialog'));
+    
+    editor.ui.addButton('FlowChart',
     {
-        editor.addCommand('flowChart', new CKEDITOR.dialogCommand('flowChartDialog'));
-        CKEDITOR.dialog.add('flowChartDialog', this.path + 'dialogs/paintIt.js');
-        editor.ui.addButton('flowChart',
-        {
-            label: 'Draw an FLowchart',
-            command: 'flowChart',
-            icon: this.path + 'images/flowchart.png'
-        });
+        label: 'Draw an FLowchart',
+        command: 'flowChart',
+        icon: this.path + 'images/flowchart.png'
+    });
+    if ( editor.contextMenu ) {
+      
+      editor.addMenuGroup( 'flowChartGroup' );
+      editor.addMenuItem( 'flowChartItem', {
+        label: 'Edit Flow Chart',
+        icon: this.path + 'images/flowchart.png',
+        command: 'flowChart',
+        group: 'flowChartGroup'
+      });
     }
+    CKEDITOR.dialog.add('flowChartDialog', this.path + 'dialogs/flowChart.js');
+    //console.log(editor);
+  }
 });

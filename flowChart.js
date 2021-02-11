@@ -21,8 +21,7 @@
 		settings.lineWidthMax = parseInt(settings.lineWidthMax);
 		settings.lineWidth = parseInt(settings.lineWidth);
 		
-		return this.each(function()
-		{			
+		return this.each(function(){			
 			var $settings = jQuery.extend(true, {}, settings);
 			
       var canvas = new Canvas($settings);
@@ -76,8 +75,7 @@
   /**
 	 * Canvas class definition
 	 */
-	function Canvas(settings)
-	{
+	function Canvas(settings){
 		this.settings = settings;
 		this.draw = false;
     this.canvas = null;
@@ -192,8 +190,18 @@
       var writer = new draw2d.io.png.Writer();
       writer.marshal($this.canvas, function(png){
         $("#canvasImage").attr("src",png);
-    });
-    }
+      });
+      var jsonWriter = new draw2d.io.json.Writer();
+      jsonWriter.marshal($this.canvas, function(json){
+        // convert the json object into string representation
+        var jsonTxt = JSON.stringify(json,null,2);
+        console.log(jsonTxt);
+        // insert the json string into a DIV for preview or post
+        // it via ajax to the server....
+        $("#canvasImage").attr("data-json",jsonTxt);
+    
+     });
+    },
 
 		/*callFunc: function(e, $this, event)
 		{

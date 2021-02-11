@@ -31,9 +31,11 @@ CKEDITOR.dialog.add('flowChartDialog', function( editor )
             var iframeWindow = document.getElementById('flowChartDialog');
             var iframeDoc = iframeWindow.contentDocument || iframeWindow.contentWindow.document;
             var element = iframeDoc.getElementById('canvasImage');
-            var paintImage = editor.document.createElement('img');
-            paintImage.setAttribute( 'src', element.src);
-            editor.insertElement(paintImage);
+            var flowChart = editor.document.createElement('flowChart');
+            var flowChartImage = flowChart.append('img')
+            flowChart.setAttribute( 'meta',element.getAttribute('data-json'));
+            flowChartImage.setAttribute( 'src', element.src);
+            editor.insertElement(flowChart);
             document.getElementById('flowChartDialog').contentWindow.clearImage();
         },
 	};
