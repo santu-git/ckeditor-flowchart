@@ -7,7 +7,11 @@
 	<script type="text/javascript" src="./inc/jquery.js"></script>
 	<script type="text/javascript" src="./inc/jquery-ui.js"></script>
 	<script type="text/javascript" src="./inc/draw2d.js"></script>
-	<script type="text/javascript" src="./inc/draw2d.js.map"></script>
+	<script type="text/javascript" src="./shapes/decision.js"></script>
+	<script type="text/javascript" src="./shapes/terminator.js"></script>
+	<script type="text/javascript" src="./shapes/process.js"></script>
+	<script type="text/javascript" src="./shapes/connector.js"></script>
+	<!-- <script type="text/javascript" src="./inc/draw2d.js.map"></script> -->
 
 	<!-- <script type="text/javascript" src="./inc/jquery.ui.widget.min.js"></script> -->
 	<!-- <script type="text/javascript" src="./inc/jquery.ui.mouse.min.js"></script> -->
@@ -19,7 +23,9 @@
 
 	<!-- wPaint -->
 	<link rel="Stylesheet" type="text/css" href="./wPaint.css" />
+	
 	<script type="text/javascript" src="./flowChart.js"></script>
+	
 	<script type="text/javascript">
 
         function toggle_visibility(id) {
@@ -73,8 +79,8 @@
 
 		function saveImage()
 		{
-			var imageData = $("#flowChartCanvas").wPaint("image");
-			$("#canvasImage").attr('src', imageData);
+			//var imageData = $("#flowChartCanvas").wPaint("image");
+			//$("#canvasImage").attr('src', imageData);
 			//$("#canvasImageData").val(imageData);
 		}
         function clearImage()

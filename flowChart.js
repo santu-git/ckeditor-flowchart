@@ -15,7 +15,7 @@
 (function($){
 
   $.fn.flowChart = function(option, settings){
-		//clean up some variables
+    //clean up some variables
 		settings = $.extend({}, $.fn.flowChart.defaultSettings, settings || {});
 		settings.lineWidthMin = parseInt(settings.lineWidthMin);
 		settings.lineWidthMax = parseInt(settings.lineWidthMax);
@@ -84,10 +84,35 @@
   Canvas.prototype = {
     
     start: function(){
+      console.log("start Called");
       this.canvas = new draw2d.Canvas("flowChartCanvas");
+      if($('#canvasImage').attr('data-json')){
+        //console.log($('#canvasImage').attr('data-json'));
+        var reader = new draw2d.io.json.Reader();
+        
+        reader.unmarshal(this.canvas, JSON.parse($('#canvasImage').attr('data-json')));
+        this.canvas.getFigures().data.forEach(function(shape){
+          shape.resetChildren();
+          $.each(shape.userData, $.proxy(function (i, json) {
+            // create the figure stored in the JSON
+            var figure = eval("new " + json.type + "()");
+            
+            // apply all attributes
+            figure.attr(json)
+    
+            // instantiate the locator
+            var locator = eval("new " + json.locator + "()");
+            // add the new figure as child to this figure
+            shape.add(figure, locator);
+          }, shape));
+        });
+        
+      }
+      
       var $this = this;
       this.canvas.getCommandStack().addEventListener(e=>{
         if (e.isPostChangeEvent()) {
+
           if (e.command.connection) {
             e.command.connection.setTargetDecorator(
               new draw2d.decoration.connection.ArrowDecorator(10, 15)
@@ -99,6 +124,7 @@
         }
         
       })
+
       return this.canvas
     },
     callDraw: function($this,mode){
@@ -114,87 +140,70 @@
       shape.createPort('hybrid', new draw2d.layout.locator.LeftLocator());
     },
     drawTerminator: function($this){
-      var shape =  new draw2d.shape.basic.Rectangle({
-        x:100,
-        y:100, 
-        width: 150,
-        height: 50,
-        radius: 10,
-        stroke:$this.settings.lineWidth, 
-        color:$this.settings.strokeStyle, 
+      var shape = new Terminator({
+        stroke: $this.settings.lineWidth, 
+        color: $this.settings.strokeStyle, 
         bgColor:$this.settings.fillStyle
-      });
-      var label =  new draw2d.shape.basic.Label({text:"Double Click on me",color: 'none'});
-      label.installEditor(new draw2d.ui.LabelInplaceEditor({}));
-      shape.add(label, new draw2d.layout.locator.CenterLocator());
+      })
       $this.canvas.add(shape);
       return shape;
     },
     drawProcess: function($this){
-      var shape =  new draw2d.shape.basic.Rectangle({
-        x:100,
-        y:100, 
-        width: 150,
-        height: 50,
-        stroke:$this.settings.lineWidth, 
-        color:$this.settings.strokeStyle, 
+      var shape = new Process({
+        stroke: $this.settings.lineWidth, 
+        color: $this.settings.strokeStyle, 
         bgColor:$this.settings.fillStyle
-      });
-      var label =  new draw2d.shape.basic.Label({text:"Process",color: 'none'});
-      label.installEditor(new draw2d.ui.LabelInplaceEditor({}));
-      shape.add(label, new draw2d.layout.locator.CenterLocator());
+      })
       $this.canvas.add(shape);
       return shape;
     },
     drawConnector: function($this){
-      var shape =  new draw2d.shape.basic.Circle({
-        x:100,
-        y:100, 
-        diameter: 75,
-        stroke:$this.settings.lineWidth, 
-        color:$this.settings.strokeStyle, 
+      var shape = new Connector({
+        stroke: $this.settings.lineWidth, 
+        color: $this.settings.strokeStyle, 
         bgColor:$this.settings.fillStyle
-      });
-      var label =  new draw2d.shape.basic.Label({text:"Connector",color: 'none'});
-      label.installEditor(new draw2d.ui.LabelInplaceEditor({}));
-      shape.add(label, new draw2d.layout.locator.CenterLocator());
+      })
       $this.canvas.add(shape);
-      // shape.on('mouseenter',function(e){
-      //   $this.attachPort(shape);
-      // })
-      // shape.on('mouseleave',function(e){
-      //   var ports = shape.getPorts().data;
-      //   ports.forEach(function(port){
-      //     shape.removePort(port);
-      //   });
-      // })
+      
       return shape;
     },
     drawDecision: function($this){
-      var shape =  new draw2d.shape.basic.Diamond({
-        x:100,
-        y:100,
-        width:100, 
-        height:100,
-        stroke:$this.settings.lineWidth, 
-        color:$this.settings.strokeStyle, 
-        bgColor:$this.settings.fillStyle
-      });
-      var label =  new draw2d.shape.basic.Label({text:"Decision",color: 'none'});
-      label.installEditor(new draw2d.ui.LabelInplaceEditor({}));
-      shape.add(label, new draw2d.layout.locator.CenterLocator());
+      var shape = new Decision({
+          stroke: $this.settings.lineWidth, 
+          color: $this.settings.strokeStyle, 
+          bgColor:$this.settings.fillStyle
+      })
       $this.canvas.add(shape);
       return shape;
     },
     exportPng: function($this){
+      $this.canvas.getFigures().data.forEach(function(figure){
+        console.log(figure.selection());
+        figure.getPorts().data.forEach(function(port){
+          port.setVisible(false);
+        })
+      });
       var writer = new draw2d.io.png.Writer();
       writer.marshal($this.canvas, function(png){
         $("#canvasImage").attr("src",png);
       });
+      $this.canvas.getFigures().data.forEach(function(figure){
+        // figure.attr({
+        //   resizeable: true
+        // });
+        figure.getPorts().data.forEach(function(port){
+          port.setVisible(true);
+        })
+      });
       var jsonWriter = new draw2d.io.json.Writer();
       jsonWriter.marshal($this.canvas, function(json){
+        const new_json = json.filter(
+          (value, index, json) =>
+            value.type !== "draw2d.ResizeHandle" &&
+            value.type !== "draw2d.HybridPort"
+        );
         // convert the json object into string representation
-        var jsonTxt = JSON.stringify(json,null,2);
+        var jsonTxt = JSON.stringify(json);
         $("#canvasImage").attr("data-json",jsonTxt);
     
      });

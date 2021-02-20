@@ -19,14 +19,17 @@ CKEDITOR.dialog.add('flowChartDialog', function( editor ){
     contents :[{
       id : 'flowChartDialog',
       label : 'flowChartDialog',
-      elements :
-      [{
+      elements :[
+        {
           type : 'html',
           html : '<center><iframe id="flowChartDialog" src="plugins/flowChart/index.html" style="height:500px;width:900px;"></iframe></center>',
           setup: function( element ) {
-            $("#canvasImage").attr("data-json",element.getAttribute('json-meta'));
+            var iframe = document.getElementById("flowChartDialog");
+            var elmnt = iframe.contentWindow.document.getElementById("canvasImage");
+            elmnt.setAttribute('data-json',element.getAttribute('data-meta'));
           },
-      }]
+        }
+      ]
     }],
     onShow: function(){
       // Get the selection from the editor.
@@ -49,7 +52,6 @@ CKEDITOR.dialog.add('flowChartDialog', function( editor ){
       
       if ( !this.insertMode )
 				this.setupContent( element );
-      console.log(this.insertMode);
     },
     onOk: function() {
       //document.getElementById('flowChartDialog').contentWindow.saveImage();
