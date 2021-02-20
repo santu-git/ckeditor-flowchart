@@ -178,7 +178,6 @@
     },
     exportPng: function($this){
       $this.canvas.getFigures().data.forEach(function(figure){
-        console.log(figure.selection());
         figure.getPorts().data.forEach(function(port){
           port.setVisible(false);
         })
@@ -188,9 +187,6 @@
         $("#canvasImage").attr("src",png);
       });
       $this.canvas.getFigures().data.forEach(function(figure){
-        // figure.attr({
-        //   resizeable: true
-        // });
         figure.getPorts().data.forEach(function(port){
           port.setVisible(true);
         })
