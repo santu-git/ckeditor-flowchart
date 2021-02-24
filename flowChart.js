@@ -86,6 +86,10 @@
     start: function(){
       console.log("start Called");
       this.canvas = new draw2d.Canvas("flowChartCanvas");
+      this.canvas.uninstallEditPolicy(
+        "draw2d.policy.canvas.DefaultKeyboardPolicy"
+      );
+      this.canvas.installEditPolicy(new ConfirmKeyboardPolicy());
       if($('#canvasImage').attr('data-json')){
         //console.log($('#canvasImage').attr('data-json'));
         var reader = new draw2d.io.json.Reader();
@@ -262,10 +266,10 @@
 			//.append($('<div class="_flowChart_icon _flowChart_pencil" title="pencil"></div>').click(function(){ $this.set_mode($this, $canvas, 'Pencil'); }))
 			//.append($('<div class="_flowChart_icon _flowChart_eraser" title="eraser"></div>').click(function(e){ $this.set_mode($this, $canvas, 'Eraser'); }))
 			.append(lineWidth)			
-			.append($('<div class="_flowChart_fillColorPicker _flowChart_colorPicker" title="fill color"></div>'))
 			.append($('<div class="_flowChart_strokeColorPicker _flowChart_colorPicker" title="stroke color"></div>'))
-			.append($('<div class="_flowChart_icon _flowChart_save" title="save"></div>').click(function(e){ javascript:saveImage(); }))
-			.append($('<div class="_flowChart_icon _flowChart_clear" title="clear"></div>').click(function(e){ javascript:clearImage(); }))
+      .append($('<div class="_flowChart_fillColorPicker _flowChart_colorPicker" title="fill color"></div>'))
+			//.append($('<div class="_flowChart_icon _flowChart_save" title="save"></div>').click(function(e){ javascript:saveImage(); }))
+			.append($('<div class="_flowChart_icon _flowChart_bin" title="clear"></div>').click(function(e){ $this.remove_node($this, $canvas); }))
 			//handle
 			var menuHandle = $('<!--div class="_flowChart_handle"></div-->')
 			
@@ -288,6 +292,12 @@
 			//$canvas.callDraw($canvas);
 			$this.menu.find("._flowChart_icon").removeClass('active');
 			$this.menu.find("._flowChart_" + mode.toLowerCase()).addClass('active');
-		}
+		},
+    remove_node: function($this,$canvas){
+      const count = $canvas.canvas.getSelection().getSize();
+      if (count > 0){
+        $canvas.canvas.remove($canvas.canvas.getPrimarySelection());
+      }
+    }
 	}
 })(jQuery);
