@@ -84,7 +84,6 @@
   Canvas.prototype = {
     
     start: function(){
-      console.log("start Called");
       this.canvas = new draw2d.Canvas("flowChartCanvas");
       this.canvas.uninstallEditPolicy(
         "draw2d.policy.canvas.DefaultKeyboardPolicy"
@@ -114,6 +113,9 @@
       }
       
       var $this = this;
+      this.canvas.on('shapeDeleted',function(){
+        $this.exportPng($this);
+      });
       this.canvas.getCommandStack().addEventListener(e=>{
         if (e.isPostChangeEvent()) {
 
@@ -297,6 +299,7 @@
       const count = $canvas.canvas.getSelection().getSize();
       if (count > 0){
         $canvas.canvas.remove($canvas.canvas.getPrimarySelection());
+        $canvas.exportPng($canvas);
       }
     }
 	}

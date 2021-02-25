@@ -18,7 +18,6 @@ Decision = draw2d.shape.basic.Diamond.extend({
     this.add(this.label, new draw2d.layout.locator.CenterLocator());
   },
   getPersistentAttributes: function () {
-    console.log("Called getPersistentAttributes");
     var memento = this._super();
 
     // add all decorations to the memento 

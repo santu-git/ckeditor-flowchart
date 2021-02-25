@@ -20,6 +20,10 @@ ConfirmKeyboardPolicy = draw2d.policy.canvas.DefaultKeyboardPolicy.extend({
       const count = canvas.getSelection().getSize();
       if (count > 0){
         canvas.remove(canvas.getPrimarySelection());
+        this._super(canvas, keyCode, shiftKey, ctrlKey);
+        canvas.fireEvent('shapeDeleted');
+        //const customEvent = new CustomEvent('nodeDeleted', { detail: deletedNode });
+        //window.dispatchEvent(customEvent);
       }
 
       /*if (count > 0 && window.confirm('Do you want to delete the selected shape?')) {
